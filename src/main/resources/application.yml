@@ -1,0 +1,6 @@
+server:
+  port: 7050
+
+spring:
+  application:
+    name: capacity-info-reader

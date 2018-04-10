@@ -1,0 +1,62 @@
+spring:
+  datasource:
+    continueOnError: true
+    url: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    username: xxxxxxxxx
+    password: xxxxxxxxx
+
+# Quartz Scheduler config (except for the jobs)
+org:
+  quartz:
+    scheduler:
+      instanceName: 'capacity-info-reader-scheduler-instance'
+      instanceId: 'AUTO'
+    jobStore:
+      class: 'org.quartz.impl.jdbcjobstore.JobStoreTX'
+      driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+      isClustered: true
+    threadPool:
+      threadCount: 5
+
+# Quartz Job with FTP Details
+dhuFtpJob:
+  # Quartz Scheduler details for DHU FTP Job
+  ##########################################
+  # Key is what goes into the "JOB_NAME" column of qrtz_job_details and, along with "JOB_GROUP", forms the key
+  key: DhuFtpJob
+  # Simple Text Description - goes into qrtz_job_details.description
+  description: Job that retrieves file from DHU FTP Server and inserts the data into the Capacity Service
+  # Job Starts immediately
+  startDelay: 0
+  # Repeat Interval is 1,000 milliseconds * 60 seconds * 5, i.e. five minutes
+  repeatInterval: 300000
+
+  # FTP Details for DHU FTP Server - The below are NOT the actual settings, they are just for a test FTP server
+  # deployed in AWS
+  ###############################
+  ftpServer: xxxxxxxxxxxxxx
+  ftpPort: 22
+  ftpUsername: xxxxxxxxxxxxxxxxxxx
+  privateKeyFileName: xxxxxxxxxxxxxxxx.pem
+
+# Quartz Job for EKHUFT (East Kent Hospitals University NHS Foundation Trust) with  Details
+ekhuftApiJob:
+  # Quartz Scheduler details for EKHUFT API Job
+  #############################################
+  # Key is what goes into the "JOB_NAME" column of qrtz_job_details and, along with "JOB_GROUP", forms the key
+  key: EkhuftJob
+  # Simple Text Description - goes into qrtz_job_details.description
+  description: Job that calls the public API at xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  # Job Starts immediately
+  startDelay: 0
+  # Repeat Interval is 1,000 milliseconds * 60 seconds * 5, i.e. five minutes
+  repeatInterval: 300000
+
+  apiUrl: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Capacity Service Client - username and password must be defined as environment variables.
+capacity:
+  service:
+    client:
+      api:
+        url: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
