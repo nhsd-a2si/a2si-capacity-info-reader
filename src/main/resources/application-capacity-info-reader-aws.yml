@@ -1,9 +1,9 @@
 spring:
   datasource:
     continueOnError: true
-    url: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    username: xxxxxxxxxxxxxxx
-    password: xxxxxxxxxxxxxxx
+    url: jdbc:mysql://quartz-instance.cmdkmtqq3v6m.us-east-1.rds.amazonaws.com:3306/quartz_db?autoReconnect=true&useSSL=false    
+    username: QuartzRoot
+    password: QuartzRoot
 
 # Quartz Scheduler config (except for the jobs)
 org:
@@ -34,10 +34,10 @@ dhuFtpJob:
   # FTP Details for DHU FTP Server - The below are NOT the actual settings, they are just for a test FTP server
   # deployed in AWS
   ###############################
-  ftpServer: xx.xx.xx.xx
+  ftpServer: ec2-107-23-133-83.compute-1.amazonaws.com
   ftpPort: 22
-  ftpUsername: 'xxxxxxxxxx'
-  privateKeyFileName: xxxxxxxxxx.pem
+  ftpUsername: 'capacity_reader'
+  privateKeyFileName: capacity_reader.pem
 
 
 # Quartz Job for EKHUFT (East Kent Hospitals University NHS Foundation Trust) with  Details
@@ -55,9 +55,15 @@ ekhuftApiJob:
 
   apiUrl: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-# Capacity Service Client - username and password must be defined as environment variables.
+# Capacity Service - username and password must be defined as environment variables.
+# The url needs to point to the capacity service URL hosted in AWS
+# The user name and password must be defined as environment variables in AWS for this service, and these
+# credentials will need to match those defined in the capacity service, as it is in the capacity service
+# where these credentials will be validated.
 capacity:
   service:
     client:
       api:
-        url: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        url: http://capacityservicetest-env.smtchzepkk.us-east-1.elasticbeanstalk.com/capacity
+        username: dummyValue
+        password: dummyValue

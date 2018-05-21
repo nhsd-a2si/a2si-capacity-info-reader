@@ -98,17 +98,16 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
             properties.put("StrictHostKeyChecking", "no");
 
             session.setConfig(properties);
-
             session.connect(5000);
 
             ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
-
             channelSftp.connect();
 
             // NOTE THAT THE RWE FILE CURRENTLY HAS A DIFFERENT DATE FORMAT THAN THE ELRUCUCC file so the code
             // must try both formats.
 
-            // Get List of all files on server with suffix of "csv"
+            // Get List of all files on server with suffix of "csv" in the 'DHU' directory
+            channelSftp.cd("dhu");
             Vector<ChannelSftp.LsEntry> csvFileList = channelSftp.ls("*.csv");
 
             // For each entry in the list, get the file name and process each file

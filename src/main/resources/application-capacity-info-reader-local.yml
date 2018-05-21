@@ -1,9 +1,9 @@
 spring:
   datasource:
     continueOnError: true
-    url: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    username: xxxxxxxxx
-    password: xxxxxxxxx
+    url: jdbc:mysql://quartz-instance.cmdkmtqq3v6m.us-east-1.rds.amazonaws.com:3306/quartz_db?autoReconnect=true&useSSL=false    
+    username: QuartzRoot
+    password: QuartzRoot
 
 # Quartz Scheduler config (except for the jobs)
 org:
@@ -29,15 +29,15 @@ dhuFtpJob:
   # Job Starts immediately
   startDelay: 0
   # Repeat Interval is 1,000 milliseconds * 60 seconds * 5, i.e. five minutes
-  repeatInterval: 300000
+  repeatInterval: 30000
 
   # FTP Details for DHU FTP Server - The below are NOT the actual settings, they are just for a test FTP server
   # deployed in AWS
   ###############################
-  ftpServer: xxxxxxxxxxxxxx
+  ftpServer: ec2-107-23-133-83.compute-1.amazonaws.com
   ftpPort: 22
-  ftpUsername: xxxxxxxxxxxxxxxxxxx
-  privateKeyFileName: xxxxxxxxxxxxxxxx.pem
+  ftpUsername: 'capacity_reader'
+  privateKeyFileName: capacity_reader.pem
 
 # Quartz Job for EKHUFT (East Kent Hospitals University NHS Foundation Trust) with  Details
 ekhuftApiJob:
@@ -52,11 +52,11 @@ ekhuftApiJob:
   # Repeat Interval is 1,000 milliseconds * 60 seconds * 5, i.e. five minutes
   repeatInterval: 300000
 
-  apiUrl: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  apiUrl: localhost
 
 # Capacity Service Client - username and password must be defined as environment variables.
 capacity:
   service:
     client:
       api:
-        url: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        url: http://capacityservicetest-env.smtchzepkk.us-east-1.elasticbeanstalk.com/capacity
