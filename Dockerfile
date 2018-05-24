@@ -5,7 +5,7 @@ VOLUME /tmp
 # When deploying into AWS Elastic Beanstalk, this Dockerfile and the jar are packaged into a zip
 # so the Maven assembly plugin that creates the zip file should ensure the zip file is still in a ./target directory
 
-ADD ./target/a2si-capacity-info-reader-0.0.12-SNAPSHOT.jar a2si-capacity-info-reader.jar
+ADD ./target/a2si-capacity-info-reader-0.0.13-SNAPSHOT.jar a2si-capacity-info-reader.jar
 
 # Expose 7050, the default port used for Capacity Info Reader
 EXPOSE 7050
