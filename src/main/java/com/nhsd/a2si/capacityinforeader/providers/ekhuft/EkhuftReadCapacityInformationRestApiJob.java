@@ -1,7 +1,7 @@
-package com.bjss.nhsd.a2si.capacityinforeader.providers.ekhuft;
+package com.nhsd.a2si.capacityinforeader.providers.ekhuft;
 
-import com.bjss.nhsd.a2si.capacityinformation.domain.CapacityInformation;
-import com.bjss.nhsd.a2si.capacityserviceclient.CapacityServiceClient;
+import com.nhsd.a2si.capacityinformation.domain.CapacityInformation;
+import com.nhsd.a2si.capacityserviceclient.CapacityServiceClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;

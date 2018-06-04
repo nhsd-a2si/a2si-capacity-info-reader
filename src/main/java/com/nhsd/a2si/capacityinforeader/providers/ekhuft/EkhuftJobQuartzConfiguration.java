@@ -1,4 +1,4 @@
-package com.bjss.nhsd.a2si.capacityinforeader.providers.ekhuft;
+package com.nhsd.a2si.capacityinforeader.providers.ekhuft;
 
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpRequest;

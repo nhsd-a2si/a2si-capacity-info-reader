@@ -1,4 +1,4 @@
-package com.bjss.nhsd.a2si.capacityinforeader;
+package com.nhsd.a2si.capacityinforeader;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
