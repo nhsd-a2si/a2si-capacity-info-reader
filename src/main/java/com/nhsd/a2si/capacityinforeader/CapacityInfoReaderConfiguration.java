@@ -1,9 +1,9 @@
-package com.bjss.nhsd.a2si.capacityinforeader;
+package com.nhsd.a2si.capacityinforeader;
 
-import com.bjss.nhsd.a2si.capacityinforeader.providers.dhu.DhuJobQuartzConfiguration;
-import com.bjss.nhsd.a2si.capacityinforeader.scheduler.QuartzConfiguration;
-import com.bjss.nhsd.a2si.capacityserviceclient.CapacityServiceClient;
-import com.bjss.nhsd.a2si.capacityserviceclient.CapacityServiceRestClient;
+import com.nhsd.a2si.capacityinforeader.providers.dhu.DhuJobQuartzConfiguration;
+import com.nhsd.a2si.capacityinforeader.scheduler.QuartzConfiguration;
+import com.nhsd.a2si.capacityserviceclient.CapacityServiceClient;
+import com.nhsd.a2si.capacityserviceclient.CapacityServiceRestClient;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;

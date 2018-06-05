@@ -1,7 +1,7 @@
-package com.bjss.nhsd.a2si.capacityinforeader.providers.dhu;
+package com.nhsd.a2si.capacityinforeader.providers.dhu;
 
-import com.bjss.nhsd.a2si.capacityinformation.domain.CapacityInformation;
-import com.bjss.nhsd.a2si.capacityserviceclient.CapacityServiceClient;
+import com.nhsd.a2si.capacityinformation.domain.CapacityInformation;
+import com.nhsd.a2si.capacityserviceclient.CapacityServiceClient;
 import com.jcraft.jsch.*;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
