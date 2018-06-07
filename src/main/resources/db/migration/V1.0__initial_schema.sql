@@ -1,6 +1,6 @@
 # Run the two commands under the system user to create a database (for MySql, database and schema are the same)
 # CREATE DATABASE QUARTZ_DB;
-GRANT ALL ON QUARTZ_DB.* TO 'quartz'@'localhost' IDENTIFIED BY 'quartz';
+GRANT ALL ON QUARTZ_DB.* TO 'quartz'@'localhost';
 
 # Run the following commands under the quartz user to create the db objects required by Quartz
 #
