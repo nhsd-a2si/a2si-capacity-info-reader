@@ -103,6 +103,15 @@ java -Dspring.profiles.active=capacity-info-reader-local \
      -jar a2si-capacity-info-reader-0.0.14-SNAPSHOT.jar
 ```
 
+Other parameters may include:
+
+```
+ -Dspring.datasource.url=jdbc:mysql://localhost:3306/quartz_db?autoReconnect=true&useSSL=false 
+ -Dspring.datasource.username=quartz 
+ -Dspring.datasource.password=*******
+ -Dcapacity.service.client.api.url=http://localhost:7020/capacity
+```
+
 ## Maintaining the Application
 The application forms the basis for adding multiple jobs to get capacity information from different providers.
 
