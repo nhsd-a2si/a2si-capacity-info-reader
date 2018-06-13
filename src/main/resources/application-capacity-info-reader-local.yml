@@ -60,3 +60,7 @@ capacity:
     client:
       api:
         url: http://capacityservicetest-env.smtchzepkk.us-east-1.elasticbeanstalk.com/capacity
+
+server:
+  ssl:
+    enabled: false

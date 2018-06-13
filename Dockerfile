@@ -6,6 +6,7 @@ VOLUME /tmp
 # so the Maven assembly plugin that creates the zip file should ensure the zip file is still in a ./target directory
 
 ADD ./target/a2si-capacity-info-reader-0.0.14-SNAPSHOT.jar a2si-capacity-info-reader.jar
+ADD ./keystore.jks keystore.jks
 
 # Expose 7050, the default port used for Capacity Info Reader
 EXPOSE 7050
