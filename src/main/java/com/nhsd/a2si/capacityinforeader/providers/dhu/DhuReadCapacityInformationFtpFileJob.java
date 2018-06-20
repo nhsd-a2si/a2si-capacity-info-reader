@@ -136,11 +136,24 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
                             capacityInformation = new CapacityInformation();
                             capacityInformation.setServiceId(lineElements[0]);
 
-                            String formattedWaitingTime =
-                                    LocalTime.MIN.plus(Duration.ofMinutes( new Long(lineElements[2]) )).toString();
-
-                            capacityInformation.setMessage(
-                                    CapacityInformation.messageTemplate.replace("xxx", formattedWaitingTime));
+                            //String formattedWaitingTime =
+                            //        LocalTime.MIN.plus(Duration.ofMinutes( new Long(lineElements[2]) )).toString();
+                            int iRawWaitingTimeMinutes = new Integer(lineElements[2]);
+                            if (iRawWaitingTimeMinutes > 0) {
+	                            int iWaitingTimeHours = iRawWaitingTimeMinutes / 60;
+	                            int iWaitingTimeMinutes = iRawWaitingTimeMinutes % 60;
+	                            
+	                            String formattedWaitingTime = iWaitingTimeMinutes + " min";
+	                            if (iWaitingTimeHours > 0) {
+	                            		formattedWaitingTime = iWaitingTimeHours + " hr " + formattedWaitingTime;
+	                            }
+	
+	                            capacityInformation.setMessage(
+	                                    CapacityInformation.messageTemplate.replace("xxx", formattedWaitingTime));
+                            } else {
+	                            capacityInformation.setMessage(
+	                                    CapacityInformation.messageTemplateNoWait);
+                            }
 
                             LocalDateTime lastUpdated;
 
