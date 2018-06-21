@@ -11,4 +11,7 @@ ADD ./keystore.jks keystore.jks
 # Expose 7050, the default port used for Capacity Info Reader
 EXPOSE 7050
 ENV JAVA_OPTS=""
+RUN ["apk", "update"]
+RUN ["apk", "add", "tzdata"]
+RUN ["ln", "-f", "-s", "/usr/share/zoneinfo/Europe/London", "/etc/localtime"]
 ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar a2si-capacity-info-reader.jar" ]
