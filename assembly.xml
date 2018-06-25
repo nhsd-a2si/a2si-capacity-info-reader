@@ -24,6 +24,7 @@
             <directory>${basedir}</directory>
             <includes>
                 <include>Dockerfile</include>
+                <include>keystore.jks</include>
             </includes>
             <outputDirectory>.</outputDirectory>
         </fileSet>

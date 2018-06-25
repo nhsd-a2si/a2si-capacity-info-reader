@@ -1,4 +1,4 @@
-package com.bjss.nhsd.a2si.capacityinforeader.providers.dhu;
+package com.nhsd.a2si.capacityinforeader.providers.dhu;
 
 import org.quartz.SimpleTrigger;
 import org.springframework.beans.factory.annotation.Value;

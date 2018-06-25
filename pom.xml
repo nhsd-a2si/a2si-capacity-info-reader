@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.nhsd.bjss.a2si</groupId>
+	<groupId>com.nhsd.a2si</groupId>
 	<artifactId>a2si-capacity-info-reader</artifactId>
-	<version>0.0.8-SNAPSHOT</version>
+	<version>0.0.15</version>
 	<packaging>jar</packaging>
 
 	<name>a2si-capacity-info-reader</name>
@@ -27,14 +27,19 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>com.bjss.nhsd.a2si</groupId>
+			<groupId>com.nhsd.a2si</groupId>
 			<artifactId>a2si-capacity-service-client</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.3</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
         <dependency>
@@ -84,8 +89,15 @@
         <dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.43</version>
+			<version>5.1.44</version>
 		</dependency>
+
+		<dependency>
+    		<groupId>org.flywaydb</groupId>
+    		<artifactId>flyway-core</artifactId>
+    		<version>5.0.7</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -136,7 +148,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<appendAssembly>false</appendAssembly>
+					<appendAssemblyId>false</appendAssemblyId>
 					<descriptors>
 						<descriptor>assembly.xml</descriptor>
 					</descriptors>

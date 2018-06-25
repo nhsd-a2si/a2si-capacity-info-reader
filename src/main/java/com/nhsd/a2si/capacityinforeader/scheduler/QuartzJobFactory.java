@@ -1,4 +1,4 @@
-package com.bjss.nhsd.a2si.capacityinforeader.scheduler;
+package com.nhsd.a2si.capacityinforeader.scheduler;
 
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.BeansException;
