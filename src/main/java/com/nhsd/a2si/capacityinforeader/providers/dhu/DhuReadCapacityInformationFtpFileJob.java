@@ -107,7 +107,8 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
             // must try both formats.
 
             // Get List of all files on server with suffix of "csv" in the 'DHU' directory
-            channelSftp.cd("dhu");
+            String folderName = "dhu";
+            channelSftp.cd(folderName);
             Vector<ChannelSftp.LsEntry> csvFileList = channelSftp.ls("*.csv");
 
             // For each entry in the list, get the file name and process each file
@@ -115,7 +116,7 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
                 InputStream inputStream = channelSftp.get(csvFile.getFilename());
                 try {
 
-                    logger.debug("Processing CSV file - {}", csvFile);
+                    logger.info("Processing CSV file - {}/{}, last changed {}", folderName, csvFile.getFilename(),  csvFile.getAttrs().getMtimeString());
 
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -166,7 +167,7 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
                             capacityInformation.setLastUpdated(
                                     capacityInformationDateTimeFormatter.format(lastUpdated));
 
-                            logger.debug("Calling Capacity Service to store Capacity Information {}", capacityInformation);
+                            logger.info("Calling Capacity Service to store Capacity Information {}", capacityInformation);
                             try {
                                 capacityServiceClient.saveCapacityInformation(capacityInformation);
                             } catch (Throwable t) {
