@@ -136,26 +136,14 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
 
                             capacityInformation = new CapacityInformation();
                             capacityInformation.setServiceId(lineElements[0]);
-
-                            //String formattedWaitingTime =
-                            //        LocalTime.MIN.plus(Duration.ofMinutes( new Long(lineElements[2]) )).toString();
-                            int iRawWaitingTimeMinutes = new Integer(lineElements[2]);
-                            if (iRawWaitingTimeMinutes > 0) {
-	                            int iWaitingTimeHours = iRawWaitingTimeMinutes / 60;
-	                            int iWaitingTimeMinutes = iRawWaitingTimeMinutes % 60;
-	                            
-	                            String formattedWaitingTime = iWaitingTimeMinutes + " min";
-	                            if (iWaitingTimeHours > 0) {
-	                            		formattedWaitingTime = iWaitingTimeHours + " hr " + formattedWaitingTime;
-	                            }
-	
-	                            capacityInformation.setMessage(
-	                                    CapacityInformation.messageTemplate.replace("xxx", formattedWaitingTime));
-                            } else {
-	                            capacityInformation.setMessage(
-	                                    CapacityInformation.messageTemplateNoWait);
+                            try {
+                            		int iWaitingTimeMinutes = new Integer(lineElements[2]);
+                            		capacityInformation.setWaitingTimeMins(iWaitingTimeMinutes);
+                            } catch (NumberFormatException nfe) {
+                            		logger.error("Waiting time mins for Service Id {} was not numeric. Value was {}", capacityInformation.getServiceId(), lineElements[2]);
+                            		continue;
                             }
-
+                            
                             LocalDateTime lastUpdated;
 
                             try {
