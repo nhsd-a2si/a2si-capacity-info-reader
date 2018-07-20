@@ -62,6 +62,9 @@ public class EkhuftReadCapacityInformationRestApiJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+    		if (ekhuftApiUrl == null || !ekhuftApiUrl.toLowerCase().startsWith("http")) {
+    			return;
+    		}
 
         try {
 

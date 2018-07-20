@@ -107,7 +107,8 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
             // must try both formats.
 
             // Get List of all files on server with suffix of "csv" in the 'DHU' directory
-            channelSftp.cd("dhu");
+            String folderName = "dhu";
+            channelSftp.cd(folderName);
             Vector<ChannelSftp.LsEntry> csvFileList = channelSftp.ls("*.csv");
 
             // For each entry in the list, get the file name and process each file
@@ -115,7 +116,7 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
                 InputStream inputStream = channelSftp.get(csvFile.getFilename());
                 try {
 
-                    logger.debug("Processing CSV file - {}", csvFile);
+                    logger.info("Processing CSV file - {}/{}, last changed {}", folderName, csvFile.getFilename(),  csvFile.getAttrs().getMtimeString());
 
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -135,26 +136,14 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
 
                             capacityInformation = new CapacityInformation();
                             capacityInformation.setServiceId(lineElements[0]);
-
-                            //String formattedWaitingTime =
-                            //        LocalTime.MIN.plus(Duration.ofMinutes( new Long(lineElements[2]) )).toString();
-                            int iRawWaitingTimeMinutes = new Integer(lineElements[2]);
-                            if (iRawWaitingTimeMinutes > 0) {
-	                            int iWaitingTimeHours = iRawWaitingTimeMinutes / 60;
-	                            int iWaitingTimeMinutes = iRawWaitingTimeMinutes % 60;
-	                            
-	                            String formattedWaitingTime = iWaitingTimeMinutes + " min";
-	                            if (iWaitingTimeHours > 0) {
-	                            		formattedWaitingTime = iWaitingTimeHours + " hr " + formattedWaitingTime;
-	                            }
-	
-	                            capacityInformation.setMessage(
-	                                    CapacityInformation.messageTemplate.replace("xxx", formattedWaitingTime));
-                            } else {
-	                            capacityInformation.setMessage(
-	                                    CapacityInformation.messageTemplateNoWait);
+                            try {
+                            		int iWaitingTimeMinutes = new Integer(lineElements[2]);
+                            		capacityInformation.setWaitingTimeMins(iWaitingTimeMinutes);
+                            } catch (NumberFormatException nfe) {
+                            		logger.error("Waiting time mins for Service Id {} was not numeric. Value was {}", capacityInformation.getServiceId(), lineElements[2]);
+                            		continue;
                             }
-
+                            
                             LocalDateTime lastUpdated;
 
                             try {
@@ -166,7 +155,7 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
                             capacityInformation.setLastUpdated(
                                     capacityInformationDateTimeFormatter.format(lastUpdated));
 
-                            logger.debug("Calling Capacity Service to store Capacity Information {}", capacityInformation);
+                            logger.info("Calling Capacity Service to store Capacity Information {}", capacityInformation);
                             try {
                                 capacityServiceClient.saveCapacityInformation(capacityInformation);
                             } catch (Throwable t) {
