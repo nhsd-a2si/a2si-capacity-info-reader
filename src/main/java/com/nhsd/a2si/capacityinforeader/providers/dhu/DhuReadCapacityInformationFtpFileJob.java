@@ -137,11 +137,18 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
                             capacityInformation = new CapacityInformation();
                             capacityInformation.setServiceId(lineElements[0]);
                             try {
-                            		int iWaitingTimeMinutes = new Integer(lineElements[2]);
-                            		capacityInformation.setWaitingTimeMins(iWaitingTimeMinutes);
+                            	// If there is a waiting time, convert it to integer and set the property
+                            	// Else, if it is blank then null the property
+                            	// This gives the data supplier the ability to remove waiting time information
+                            	if (lineElements[2].trim().length() > 0) {
+	                            	int iWaitingTimeMinutes = new Integer(lineElements[2]);
+	                            	capacityInformation.setWaitingTimeMins(iWaitingTimeMinutes);
+                            	} else {
+                            		capacityInformation.setWaitingTimeMins(null);
+                            	}
                             } catch (NumberFormatException nfe) {
-                            		logger.error("Waiting time mins for Service Id {} was not numeric. Value was {}", capacityInformation.getServiceId(), lineElements[2]);
-                            		continue;
+                            	logger.error("Waiting time mins for Service Id {} was not numeric. Value was {}", capacityInformation.getServiceId(), lineElements[2]);
+                            	continue;
                             }
                             
                             LocalDateTime lastUpdated;
@@ -159,8 +166,7 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
                             try {
                                 capacityServiceClient.saveCapacityInformation(capacityInformation);
                             } catch (Throwable t) {
-                                logger.error("Exception Thrown saving Capacity Information {} in Capacity Service",
-                                        capacityInformation, t);
+                                logger.error("Exception Thrown saving Capacity Information {} in Capacity Service", capacityInformation, t);
                             }
                             logger.debug("Called Capacity Service that saved Capacity Information {}", capacityInformation);
                         }
