@@ -1,5 +1,6 @@
 package com.nhsd.a2si.capacityinforeader.providers.dhu;
 
+import com.nhsd.a2si.capacityinforeader.providers.LeadingZeros;
 import com.nhsd.a2si.capacityinformation.domain.CapacityInformation;
 import com.nhsd.a2si.capacityserviceclient.CapacityServiceClient;
 import com.jcraft.jsch.*;
@@ -41,8 +42,7 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
     private static DateTimeFormatter ftpFiledateTimeFormatter2 =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    private DateTimeFormatter capacityInformationDateTimeFormatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private DateTimeFormatter capacityInformationDateTimeFormatter = DateTimeFormatter.ofPattern(CapacityInformation.STRING_DATE_FORMAT);
 
     //private static final String remoteFileName = "ELRUCUCCWaitingTimes.csv";
     private static final String lineElementSeparator = ",";
@@ -141,7 +141,7 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
                             	// Else, if it is blank then null the property
                             	// This gives the data supplier the ability to remove waiting time information
                             	if (lineElements[2].trim().length() > 0) {
-	                            	int iWaitingTimeMinutes = new Integer(lineElements[2]);
+	                            	int iWaitingTimeMinutes = new Integer(LeadingZeros.strip(lineElements[2]));
 	                            	capacityInformation.setWaitingTimeMins(iWaitingTimeMinutes);
                             	} else {
                             		capacityInformation.setWaitingTimeMins(null);
