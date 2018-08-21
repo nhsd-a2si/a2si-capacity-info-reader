@@ -1,5 +1,6 @@
 package com.nhsd.a2si.capacityinforeader.providers.ekhuft;
 
+import com.nhsd.a2si.capacityinforeader.providers.LeadingZeros;
 import com.nhsd.a2si.capacityinformation.domain.CapacityInformation;
 import com.nhsd.a2si.capacityserviceclient.CapacityServiceClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,8 +33,8 @@ public class EkhuftReadCapacityInformationRestApiJob implements Job {
 
     private HashMap<String, String> codeToServiceIdMap;
 
-    private DateTimeFormatter capacityInformationDateTimeFormatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private DateTimeFormatter capacityInformationDateTimeFormatter = DateTimeFormatter.ofPattern(CapacityInformation.STRING_DATE_FORMAT);
+
 
     @Autowired
     private RestTemplate ekhuftApiRestTemplate;
@@ -86,8 +87,10 @@ public class EkhuftReadCapacityInformationRestApiJob implements Job {
                 capacityInformation.setServiceId(codeToServiceIdMap.get(k));
                 String waitTime = (String) v.get("minor_wait");
 
-                capacityInformation.setMessage(
-                        CapacityInformation.messageTemplate.replace("xxx", waitTime));
+                if(waitTime.length() > 0) {
+                    int iWaitingTimeMinutes = new Integer(LeadingZeros.strip(waitTime));
+                    capacityInformation.setWaitingTimeMins(iWaitingTimeMinutes);
+                }
 
                 capacityInformation.setLastUpdated(capacityInformationDateTimeFormatter.format(lastUpdated));
 
