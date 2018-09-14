@@ -151,16 +151,24 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
                             	continue;
                             }
                             
+                            String lineElement6 = lineElements[6].trim();
                             LocalDateTime lastUpdated;
 
-                            try {
-                                lastUpdated = LocalDateTime.parse(lineElements[6], ftpFiledateTimeFormatter1);
-                            } catch (DateTimeParseException dtpe) {
-                                lastUpdated = LocalDateTime.parse(lineElements[6], ftpFiledateTimeFormatter2);
+                            if (lineElement6.length() > 0) {
+	                            try {
+	                                lastUpdated = LocalDateTime.parse(lineElement6, ftpFiledateTimeFormatter1);
+	                                capacityInformation.setLastUpdated(capacityInformationDateTimeFormatter.format(lastUpdated));
+	                            } catch (DateTimeParseException dtpe) {
+	                            	try {
+	                            		lastUpdated = LocalDateTime.parse(lineElement6, ftpFiledateTimeFormatter2);
+	                                    capacityInformation.setLastUpdated(capacityInformationDateTimeFormatter.format(lastUpdated));
+	                            	} catch (DateTimeParseException dtpe2) {   
+	                            		capacityInformation.setLastUpdated(lineElement6);
+	                            	}
+	                            }
+                            } else {
+                        		capacityInformation.setLastUpdated(lineElement6);                            	
                             }
-
-                            capacityInformation.setLastUpdated(
-                                    capacityInformationDateTimeFormatter.format(lastUpdated));
 
                             logger.info("Calling Capacity Service to store Capacity Information {}", capacityInformation);
                             try {
