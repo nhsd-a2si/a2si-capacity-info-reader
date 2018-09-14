@@ -4,14 +4,20 @@ import com.nhsd.a2si.capacityinforeader.providers.dhu.DhuJobQuartzConfiguration;
 import com.nhsd.a2si.capacityinforeader.scheduler.QuartzConfiguration;
 import com.nhsd.a2si.capacityserviceclient.CapacityServiceClient;
 import com.nhsd.a2si.capacityserviceclient.CapacityServiceRestClient;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,16 +25,21 @@ import org.springframework.web.client.RestTemplate;
 @Import({ QuartzConfiguration.class, DhuJobQuartzConfiguration.class} )
 public class CapacityInfoReaderConfiguration {
 
+
+    @Value("${capacity.service.username}")
+    private String capacityServiceUsername;
+
+    @Value("${capacity.service.password}")
+    private String capacityServicePassword;
+
+
     // Pooling Client Connection Manager maintains a pool of HTTP connections, this saves time and resource
     // as creating an HTTP connection is considered a heavyweight process
     @Bean
     public PoolingHttpClientConnectionManager poolingHttpClientConnectionManager() {
-
-        PoolingHttpClientConnectionManager poolingHttpClientConnectionManager =
-                new PoolingHttpClientConnectionManager();
+        PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager();
         poolingHttpClientConnectionManager.setMaxTotal(20);
         return poolingHttpClientConnectionManager;
-
     }
 
     // Note: socketTimeout() (or SO_TIMEOUT) refers to the timeout for waiting for data,
@@ -38,37 +49,34 @@ public class CapacityInfoReaderConfiguration {
     // RequestConfig defines the wait times before time outs occur
     @Bean
     public RequestConfig requestConfig() {
-
         return RequestConfig.custom()
                 .setSocketTimeout(1000)
                 .setConnectTimeout(200)
                 .setConnectionRequestTimeout(200)
                 .build();
-
     }
 
     // an HTTP client is extracted from the connection manager and uses the request configuration to define the timeouts
+    @Primary
     @Bean
-    public CloseableHttpClient httpClient(PoolingHttpClientConnectionManager poolingHttpClientConnectionManager,
-                                          RequestConfig requestConfig) {
-
+    public CloseableHttpClient readerHttpClient() {
+        System.out.println();
         return HttpClientBuilder
                 .create()
-                .setConnectionManager(poolingHttpClientConnectionManager)
-                .setDefaultRequestConfig(requestConfig)
+             .setConnectionManager(poolingHttpClientConnectionManager())
+                .setDefaultRequestConfig(requestConfig())
+                .setDefaultCredentialsProvider(credentialsProvider())
                 .build();
 
     }
 
-    // The Rest Template is configured to use the components defined in the http client, which include
-    // the pooling connection manager and the request configuration
+    // Basic Auth credentials
     @Bean
-    public RestTemplate restTemplate(HttpClient httpClient) {
-
-        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-        requestFactory.setHttpClient(httpClient);
-        return new RestTemplate(requestFactory);
-
+    public CredentialsProvider credentialsProvider(){
+        CredentialsProvider provider = new BasicCredentialsProvider();
+        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(this.capacityServiceUsername, this.capacityServicePassword);
+        provider.setCredentials(AuthScope.ANY, credentials);
+        return provider;
     }
 
     // The http client objects and rest templates are all built in order to support the Capacity Service Client,
@@ -76,10 +84,7 @@ public class CapacityInfoReaderConfiguration {
     // capacity of services
     @Bean(name = "capacityServiceClient")
     public CapacityServiceClient capacityServiceClient() {
-
-        return new CapacityServiceRestClient(restTemplate(httpClient(poolingHttpClientConnectionManager(),
-                requestConfig())));
-
+        return new CapacityServiceRestClient();
     }
 
 
