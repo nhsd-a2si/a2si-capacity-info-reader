@@ -5,7 +5,7 @@
 
 	<groupId>com.nhsd.a2si</groupId>
 	<artifactId>a2si-capacity-info-reader</artifactId>
-	<version>0.0.18</version>
+	<version>0.0.19</version>
 	<packaging>jar</packaging>
 
 	<name>a2si-capacity-info-reader</name>
