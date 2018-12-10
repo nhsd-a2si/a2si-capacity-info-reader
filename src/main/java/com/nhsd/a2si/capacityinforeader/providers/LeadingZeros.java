@@ -10,9 +10,11 @@ public interface LeadingZeros {
      * @param integer String representation of an integer
      * @return The input string with any leading zeros removed
      */
-    static String strip(String integer){
-        if(integer.charAt(0) == '0'){
+    static String strip(String integer) {
+        if (integer.length() > 1 && integer.charAt(0) == '0') {
             return LeadingZeros.strip(integer.substring(1));
+        } else if (integer.length() == 1 && integer.charAt(0) == '0') {
+        	return null;
         }
         return integer;
     }

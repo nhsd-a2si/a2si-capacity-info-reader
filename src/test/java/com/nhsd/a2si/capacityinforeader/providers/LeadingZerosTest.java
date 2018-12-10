@@ -28,4 +28,19 @@ public class LeadingZerosTest {
         assertThat(LeadingZeros.strip("0000000000000000000000000000123"), is("123"));
     }
 
+    @Test
+    public void string_zero_only_becomes_null() {
+        assertThat(LeadingZeros.strip("0"), nullValue());
+    }
+
+    @Test
+    public void string_numerous_zeros_become_null() {
+        assertThat(LeadingZeros.strip("0000000"), nullValue());
+    }
+
+    @Test
+    public void empty_string_becomes_empty_string() {
+        assertThat(LeadingZeros.strip(""), is(""));
+    }
+
 }

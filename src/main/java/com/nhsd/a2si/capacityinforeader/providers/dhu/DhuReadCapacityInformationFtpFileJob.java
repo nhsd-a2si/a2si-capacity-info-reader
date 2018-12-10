@@ -141,8 +141,12 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
                             	// Else, if it is blank then null the property
                             	// This gives the data supplier the ability to remove waiting time information
                             	if (lineElements[2].trim().length() > 0) {
-	                            	int iWaitingTimeMinutes = new Integer(LeadingZeros.strip(lineElements[2]));
-	                            	capacityInformation.setWaitingTimeMins(iWaitingTimeMinutes);
+                            		String sWaitingTimeMins = LeadingZeros.strip(lineElements[2]);
+                            		if (sWaitingTimeMins == null || sWaitingTimeMins.length() == 0) {
+                            			capacityInformation.setWaitingTimeMins(null);
+                            		} else {
+                            			capacityInformation.setWaitingTimeMins(new Integer(sWaitingTimeMins));
+                            		}
                             	} else {
                             		capacityInformation.setWaitingTimeMins(null);
                             	}
@@ -180,10 +184,9 @@ public class DhuReadCapacityInformationFtpFileJob implements Job {
                         }
                     }
 
-                } catch (IOException io) {
-                    System.out.println("Exception occurred during reading file from SFTP server due to " +
-                            io.getMessage());
-                    io.getMessage();
+                } catch (Exception e) {
+                    System.out.println("Exception occurred during reading file from SFTP server due to " + e.getMessage());
+                    e.getMessage();
 
                 }
             }
